@@ -1,3 +1,7 @@
+.widget-admin .button{
+	z-index:100;
+}
+
 .x-gallery-outer {	
 	border: 0;
 	text-align: center;	
@@ -18,8 +22,7 @@
 }
 .x-gallery li .post {
 	position:relative;
-	border: solid 1px #1a1a1a;
-	z-index:-100;
+	border: solid 1px #1a1a1a;	
 }
 
 

@@ -34,11 +34,7 @@ $list = g::posts( array(
 			if($thumb['src']) {
 				$img = '<img class="img_left" src="'.$thumb['src'].'">';
 				$count_image ++;
-			} /*
-			elseif ( $image_from_tag = g::thumbnail_from_image_tag( $list[$i]['wr_content'], $bo_table, $post_widthwidth-2, $post_widthheight-1 )) {
-				$img = "<img class='img_left' src='$image_from_tag'/>";
-				$count_image ++;
-			}*/
+			}
 			else {
 				$img = '<img class="img_left" src="'.x::url()."/widget/".$widget_config['name'].'/img/no-image.png"/>';
 				$no_image = g::thumbnail_from_image_tag( $img, $bo_table, $post_width-2, $post_height-1 );
