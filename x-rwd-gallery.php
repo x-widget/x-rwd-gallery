@@ -5,7 +5,7 @@ include_once(G5_LIB_PATH.'/thumbnail.lib.php');
 widget_css();
 
 if( $widget_config['forum1'] ) $_bo_table = $widget_config['forum1'];
-else $_bo_table = bo_table(1);
+else $_bo_table = $widget_config['default_forum_id'];
 
 if( $widget_config['width'] ) $post_width = $widget_config['width'];
 else $post_width = 240;
@@ -28,19 +28,16 @@ $list = g::posts( array(
 <?
 	$count_image = 0;
 	for ($i=0; $i<count($list); $i++) {
-		
+		$_wr_id = $list[$i]['wr_id'];
 		if ( $count_image >= 4 ) break;
-			$thumb = get_list_thumbnail($_bo_table, $list[$i]['wr_id'], $post_width, $post_height);    					            
-			if($thumb['src']) {
-				$img = '<img class="img_left" src="'.$thumb['src'].'">';
-				$count_image ++;
-			}
-			else {
-				$img = '<img class="img_left" src="'.x::url()."/widget/".$widget_config['name'].'/img/no-image.png"/>';
-				$no_image = g::thumbnail_from_image_tag( $img, $_bo_table, $post_width-2, $post_height-1 );
-				$img = "<img class='img_left' src='$no_image'/>";
-				$count_image ++;
-			}
+			$thumb = x::post_thumbnail($_bo_table, $_wr_id, $post_width, $post_height);    					            
+			if( empty($thumb['src'])) {
+				$_wr_content = db::result("SELECT wr_content FROM $g5[write_prefix]$_bo_table WHERE wr_id='$_wr_id'");
+				$image_from_tag = g::thumbnail_from_image_tag( $_wr_content, $_bo_table, $post_width, $post_height);
+				if ( empty($image_from_tag) ) $image_from_tag = g::thumbnail_from_image_tag( '<img class="img_left" src="'.x::url()."/widget/".$widget_config['name'].'/img/no-image.png"/>', $_bo_table, $post_width-2, $post_height-1 );
+				$img = "<img class='img_left' src='$image_from_tag'/>";
+			} else 	$img = '<img class="img_left" src="'.$thumb['src'].'">';
+			$count_image ++;
 ?>	
 		<li>
 			<div class='post' no="<?=$count_image?>">
